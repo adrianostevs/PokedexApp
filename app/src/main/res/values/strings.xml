@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Pokedex</string>
+    <string name="nama_pokemon">Nama Pokemon</string>
+    <string name="id_pokemon">ID Pokemon</string>
+    <string name="cari_pokemon">Cari Pokemon</string>
+    <string name="tipe">Tipe</string>
+    <string name="about">About</string>
+    <string name="total_height">Total Height</string>
+    <string name="total_weight">Total Weight</string>
+    <string name="atk">ATK</string>
+    <string name="sp_def">Sp. DEF</string>
+    <string name="spd">SPD</string>
+    <string name="sp_atk">Sp. ATK</string>
+    <string name="hp">HP</string>
+    <string name="def">DEF</string>
+    <string name="stats">STATS</string>
+</resources>
