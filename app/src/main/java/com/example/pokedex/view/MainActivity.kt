@@ -2,39 +2,45 @@ package com.example.pokedex.view
 
 import android.app.SearchManager
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import android.widget.SearchView
+import android.widget.SearchView.OnQueryTextListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex.R
 import com.example.pokedex.adapter.ListPokemonAdapter
 import com.example.pokedex.databinding.ActivityMainBinding
-import com.example.pokedex.model.MainModel
+import com.example.pokedex.model.Pokemon
 import com.example.pokedex.viewmodel.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
     private val listPokemonAdapter = ListPokemonAdapter()
+    private val PokemonArrayList = ArrayList<Pokemon>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.rvList.adapter = listPokemonAdapter
+
+        val mainActivityViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainActivityViewModel::class.java)
+        mainActivityViewModel.getListPokemon(50,1)
+       binding.rvList.adapter = listPokemonAdapter
 
         val layoutManager = GridLayoutManager(this, 3)
         binding.rvList.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         binding.rvList.addItemDecoration(itemDecoration)
 
-        val mainActivityViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainActivityViewModel::class.java)
+
         mainActivityViewModel.showPokemon.observe(this) { results -> setPokemon(results) }
-        mainActivityViewModel.searchPokemon.observe(this){ search -> searchPokemon(search)}
         mainActivityViewModel.isLoading.observe(this){showLoading(it)}
+
 
         val searchManager = getSystemService(SEARCH_SERVICE) as SearchManager
         val searchView = binding.svCari
@@ -44,34 +50,32 @@ class MainActivity : AppCompatActivity() {
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(pokemon_id: String): Boolean {
                 Toast.makeText(this@MainActivity, pokemon_id, Toast.LENGTH_SHORT).show()
-                mainActivityViewModel.getSearchPokemon(pokemon_id)
+                listPokemonAdapter.filter(pokemon_id)
                 searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+
                 return false
             }
         })
     }
 
+    private fun filter(pokemonId: String) {
+        val filteredlist: ArrayList<Pokemon> = ArrayList()
 
-    private fun searchPokemon(search: MainModel) {
-        listPokemonAdapter.setData(search)
-        listPokemonAdapter.setOnItemClickCallback(object : ListPokemonAdapter.OnItemClickCallback {
-            override fun onItemClicked(pokemon: MainModel) {
-                showSelectedUser(pokemon)
-                val moveWithObjectIntent = Intent(this@MainActivity, DetailActivity::class.java)
-                moveWithObjectIntent.putExtra(DetailActivity.USERNAME, pokemon.name)
-                startActivity(moveWithObjectIntent)
+        for (item in PokemonArrayList) {
+            if (item.name.contains(pokemonId)) {
+                filteredlist.add(item)
             }
-        })
+        }
     }
 
-    private fun setPokemon(results: MainModel) {
+    private fun setPokemon(results: List<Pokemon>) {
         listPokemonAdapter.setData(results)
         listPokemonAdapter.setOnItemClickCallback(object : ListPokemonAdapter.OnItemClickCallback {
-            override fun onItemClicked(pokemon: MainModel) {
+            override fun onItemClicked(pokemon: Pokemon) {
                 showSelectedUser(pokemon)
                 val moveWithObjectIntent = Intent(this@MainActivity, DetailActivity::class.java)
                 moveWithObjectIntent.putExtra(DetailActivity.NAME, pokemon.name)
@@ -80,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun showSelectedUser(pokemon: MainModel) {
+    private fun showSelectedUser(pokemon: Pokemon) {
         Toast.makeText(this, "Anda memilih " + pokemon.name, Toast.LENGTH_SHORT).show()
     }
 

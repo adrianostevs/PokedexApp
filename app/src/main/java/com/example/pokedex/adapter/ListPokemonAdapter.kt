@@ -6,24 +6,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pokedex.databinding.ListPokemonBinding
 import com.example.pokedex.model.MainModel
+import com.example.pokedex.model.Pokemon
+import okhttp3.internal.filterList
 
 class ListPokemonAdapter() : RecyclerView.Adapter<ListPokemonAdapter.ListViewHolder>(){
 
     private lateinit var onItemClickCallback: OnItemClickCallback
-    private val listPokemon = ArrayList<MainModel>()
+    private val listPokemon = ArrayList<Pokemon>()
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
-    fun setData(poke: MainModel){
+    fun setData(poke: List<Pokemon>){
         listPokemon.clear()
-        listPokemon.addAll(listOf(poke))
+        listPokemon.addAll(poke)
         notifyDataSetChanged()
     }
 
     inner class ListViewHolder(var binding: ListPokemonBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(pokes: MainModel){
+        fun bind(pokes: Pokemon){
             binding.root.setOnClickListener {
                 onItemClickCallback.onItemClicked(pokes) }
             binding.apply{
@@ -43,7 +45,7 @@ class ListPokemonAdapter() : RecyclerView.Adapter<ListPokemonAdapter.ListViewHol
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(pokes: MainModel)
+        fun onItemClicked(pokes: Pokemon)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
