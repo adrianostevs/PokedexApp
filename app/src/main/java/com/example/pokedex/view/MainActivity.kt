@@ -50,7 +50,6 @@ class MainActivity : AppCompatActivity() {
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(pokemon_id: String): Boolean {
                 Toast.makeText(this@MainActivity, pokemon_id, Toast.LENGTH_SHORT).show()
-                listPokemonAdapter.filter(pokemon_id)
                 searchView.clearFocus()
                 return true
             }
@@ -60,16 +59,6 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
-    }
-
-    private fun filter(pokemonId: String) {
-        val filteredlist: ArrayList<Pokemon> = ArrayList()
-
-        for (item in PokemonArrayList) {
-            if (item.name.contains(pokemonId)) {
-                filteredlist.add(item)
-            }
-        }
     }
 
     private fun setPokemon(results: List<Pokemon>) {
