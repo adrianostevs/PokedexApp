@@ -1,13 +1,12 @@
 package com.example.pokedex.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pokedex.databinding.ListPokemonBinding
-import com.example.pokedex.model.MainModel
 import com.example.pokedex.model.Pokemon
-import okhttp3.internal.filterList
 
 class ListPokemonAdapter() : RecyclerView.Adapter<ListPokemonAdapter.ListViewHolder>(){
 

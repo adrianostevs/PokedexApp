@@ -21,7 +21,7 @@ class MainActivityViewModel : ViewModel() {
 
     fun getListPokemon (limit: Int, offset: Int){
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getListPokemon()
+        val client = ApiConfig.getApiService().getListPokemon(limit, offset)
         client.enqueue(object: Callback<MainModel> {
             override fun onResponse(
                 call: Call<MainModel>,
@@ -42,30 +42,6 @@ class MainActivityViewModel : ViewModel() {
             }
         })
     }
-
-//   fun getSearchPokemon (pokemon_id: String){
-//        _isLoading.value = true
-//        val client = ApiConfig.getApiService().getPokemon(pokemon_id)
-//        client.enqueue(object: Callback<MainModel> {
-//            override fun onResponse(
-//                call: Call<MainModel>,
-//                response: Response<MainModel>
-//            ){
-//                _isLoading.value = false
-//                Log.d("tess", response.toString())
-//                if (response.isSuccessful){
-//                    _showPokemon.value = response.body()?.results
-//                } else {
-//                    Log.e(TAG, "onFailure: ${response.message()}")
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<MainModel>, t: Throwable) {
-//                _isLoading.value = false
-//                Log.e(TAG, "onFailure: ${t.message.toString()}")
-//            }
-//        })
-//    }
 
     companion object{
         private const val TAG = "MainActivityViewModel"

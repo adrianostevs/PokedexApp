@@ -10,6 +10,8 @@ interface ApiService {
 
     @GET("pokemon")
     fun getListPokemon(
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): Call<MainModel>
 
     @GET("pokemon/{pokemon_id}")
@@ -20,5 +22,5 @@ interface ApiService {
     @GET("pokemon-species/{pokemon_id}")
     fun getDetailPokemon(
         @Path("pokemon_id") pokemon_id: String
-    ): Call<FlavorTextEntries>
+    ): Call<AboutModel>
 }

@@ -1,6 +1,5 @@
 package com.example.pokedex.model
 
-import kotlin.random.Random
 import com.google.gson.annotations.SerializedName
 
 data class DetailModel(
@@ -26,28 +25,12 @@ data class DetailModel(
     @field:SerializedName("stats")
     val stats: List<Stats>,
 
-    val hp: Int = Random.nextInt(maxHp),
-    val attack: Int = Random.nextInt(maxAttack),
-    val defense: Int = Random.nextInt(maxDefense),
-    val speed: Int = Random.nextInt(maxSpeed),
 ){
     fun getIdString(): String = String.format("#%03d", id)
     fun getWeightString(): String = String.format("%.1f KG", weight.toFloat() / 10)
     fun getHeightString(): String = String.format("%.1f M", height.toFloat() / 10)
-    fun getHpString(): String = "$hp/$maxHp"
-    fun getAttackString(): String = "$attack/$maxAttack"
-    fun getDefenseString(): String = "$defense/$maxDefense"
-    fun getSpeedString(): String = "$speed/$maxSpeed"
     fun getImageUrl(): String {
-        val url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png"
-        return url
-    }
-
-    companion object {
-        const val maxHp = 300
-        const val maxAttack = 300
-        const val maxDefense = 300
-        const val maxSpeed = 300
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png"
     }
 }
 
